@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-
+require("dotenv").config();
+const cors = require("cors");
 const taskRoute = require("./routes/taskRoute.js");
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", function (req, res) {
   res.send("Hello World");
