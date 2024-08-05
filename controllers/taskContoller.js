@@ -2,7 +2,8 @@ const Task = require("../models/taskModel");
 
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({});
+    const tasks = await Task.find({ user: req.user.id });
+
     res.status(200).json(tasks);
   } catch {
     res.status(404).json("no task");
@@ -21,7 +22,7 @@ const updateTaskbyID = async (req, res) => {
   try {
     const { id } = req.params;
     const task = await Task.findByIdAndUpdate(id, req.body);
-    if (!task) {
+    if (!task || task.user.toString() !== req.user.id) {
       res.status(404).send("error");
     }
     const updatedTask = await Task.findById(id);
