@@ -16,7 +16,7 @@ function Login() {
     try {
       const { data } = await axios.post("/login", { email, password });
       setUser(data);
-
+      localStorage.setItem("token", data.token);
       alert("login succcessful");
       setRedirect(true);
     } catch (error) {

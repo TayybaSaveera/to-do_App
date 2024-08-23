@@ -3,15 +3,17 @@ import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "./UserContext";
 function ProtectedRoute({ children }) {
-  const { user } = useContext(UserContext);
+  const { user, ready } = useContext(UserContext);
 
-  if (!user) {
-    // If no user, redirect to login page
-    return <Navigate to="/login" />;
+  if (!ready) {
+    return <div>Loading...</div>; // You can show a loading screen while checking session
   }
 
-  // If the user is authenticated, render the children (protected content)
-  return children;
+  if (!user) {
+    return <Navigate to="/login" />; // Redirect to login if not authenticated
+  }
+
+  return children; // Render protected components if authenticated
 }
 
 export default ProtectedRoute;

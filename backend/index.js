@@ -5,12 +5,13 @@ const mongoose = require("mongoose");
 const cookieparser = require("cookie-parser");
 const authRouter = require("./routes/AuthRoute");
 const session = require("express-session");
+const taskRouter = require("./routes/TaskRoute");
 // require("dotenv").config();
 app.use(
   session({
     secret: "hi",
     resave: false,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 },
+    cookie: { maxAge: 8 * 60 * 1000 },
     saveunintialized: false,
   })
 );
@@ -26,6 +27,7 @@ app.use(
 );
 
 app.use(authRouter);
+app.use(taskRouter);
 // app.post("/register", (req, res) => {
 //   const { name, email, password } = req.body;
 //   res.json({ name, email, password });
