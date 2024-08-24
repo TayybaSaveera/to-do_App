@@ -6,10 +6,17 @@ const {
   Login,
   profile,
   Logout,
+  // updateAccount,
+  deleteAccount,
+  updateName,
+  updateEmail,
 } = require("../controllers/AuthController");
 router.post("/signup", Register);
 router.post("/login", Login);
 router.get("/profile", isAuthenticated, profile);
-router.post("/Logout", Logout);
-
+router.post("/Logout", isAuthenticated, Logout);
+// router.put("/updateuser/:id", isAuthenticated, updateAccount);
+router.delete("/deleteAccount/:id", isAuthenticated, deleteAccount);
+router.put("/updateName/:id", isAuthenticated, updateName);
+router.put("/updateEmail/:id", isAuthenticated, updateEmail);
 module.exports = router;

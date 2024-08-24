@@ -8,6 +8,8 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
 import { UserContextProvider } from "./UserContext.jsx";
+import Account from "./pages/Account.jsx";
+import UpdateEmail from "./components/UpdateEmail.jsx";
 
 function App() {
   return (
@@ -21,6 +23,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/updateEmail"
+            element={
+              <ProtectedRoute>
+                <UpdateEmail />
               </ProtectedRoute>
             }
           />

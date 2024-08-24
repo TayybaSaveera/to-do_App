@@ -2,34 +2,64 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { UserContext } from "../UserContext";
 import { Card } from "@material-tailwind/react";
+import { Link, useNavigate } from "react-router-dom";
+import Account from "../pages/Account";
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  // Function to toggle card visibility
+
+  const Logout = async (e) => {
+    e.preventDefault();
+    try {
+      // Include the headers and token properly
+      const response = await axios.post("/Logout", null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Pass token correctly
+        },
+      });
+
+      if (response.status === 200) {
+        alert("Logout successful");
+        localStorage.removeItem("token"); // Clear the token after logout
+        navigate("/login");
+        // Optionally redirect the user to the login page or home
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      alert("An error occurred while logging out.");
+    }
+  };
+
   const { user } = useContext(UserContext);
   if (!user) {
     return <div>Loading...</div>;
   }
   return (
-    <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+    <Card className="h-[100vh] w-full max-w-[17rem] p-4 shadow-xl shadow-blue-gray-900/5 bg-blue-gray-100">
       <div className="px-4 py-4  gap-2">
         <div className="flex flex-row justify-between mb-2">
           <div className="flex gap-2 items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-user-circle"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-              <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-              <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-            </svg>
+            <Link to="/account">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-user-circle"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+              </svg>
+            </Link>
 
             <div className="uppercase">{user.name}</div>
           </div>
@@ -192,6 +222,11 @@ function Navbar() {
           </svg>
           <h1>Completed</h1>
         </div>
+      </div>
+      <div className="px-4 py-4 mt-32">
+        <button class="btn bg-cyan text-white" onClick={Logout}>
+          Logout
+        </button>
       </div>
     </Card>
   );
